@@ -30,9 +30,9 @@ jobs:
 
       - name: Run Tests
         run: |
-          echo "PYTHONPATH=$(pwd)" >> $GITHUB_ENV
-          pytest tests/ --cov=app --cov-report=xml
-
+            echo "PYTHONPATH=$(pwd)" >> $GITHUB_ENV
+            export PYTHONPATH=$(pwd)
+            pytest tests/ --cov=app --cov-report=xml
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@v2
         env:
