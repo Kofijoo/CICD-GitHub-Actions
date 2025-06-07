@@ -25,10 +25,13 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
           pip install pytest pytest-cov
+
       - name: Run Tests
         run: |
-          echo "PYTHONPATH set to: $PWD"
-          PYTHONPATH=. pytest --cov=app --cov-report=xml
+          export PYTHONPATH=$PYTHONPATH:$(pwd)
+          echo "PYTHONPATH set to: $PYTHONPATH"
+          pytest --cov=app --cov-report=xml
+
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@v2
         env:
