@@ -31,13 +31,12 @@ jobs:
           export PYTHONPATH=$PYTHONPATH:$(pwd)
           echo "PYTHONPATH set to: $PYTHONPATH"
           pytest --cov=app --cov-report=xml
-
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@v2
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:
           args: >
-            -Dsonar.projectKey=cicd-github-actions
+            -Dsonar.projectKey=kofijoo_cicd-github-actions-calculator
             -Dsonar.organization=kofijoo
             -Dsonar.python.coverage.reportPaths=coverage.xml
