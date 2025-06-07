@@ -5,3 +5,4 @@ This project builds a secure and automated CI/CD pipeline for a Python applicati
 - SonarQube
 - Trivy
 - AWS EC2
+# trigger analysis
