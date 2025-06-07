@@ -28,15 +28,26 @@ jobs:
 
       - name: Run Tests
         run: |
-          export PYTHONPATH=$PYTHONPATH:$(pwd)
-          echo "PYTHONPATH set to: $PYTHONPATH"
-          pytest --cov=app --cov-report=xml
+          echo "PYTHONPATH set to: $PWD"
+          PYTHONPATH=. pytest --cov=app --cov-report=xml
+
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@v2
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:
           args: >
-            -Dsonar.projectKey=kofijoo_cicd-github-actions-calculator
+            -Dsonar.projectKey=cicd-github-actions
             -Dsonar.organization=kofijoo
             -Dsonar.python.coverage.reportPaths=coverage.xml
+
+      - name: Build Docker Image
+        run: docker build -t kofi-calculator-image .
+
+      - name: Run Trivy Vulnerability Scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: kofi-calculator-image
+          format: table
+          ignore-unfixed: true
+          vuln-type: os,library
