@@ -15,7 +15,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-            fetch-depth: 0
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -30,8 +30,8 @@ jobs:
 
       - name: Run Tests
         run: |
-            echo "PYTHONPATH=$(pwd)" >> $GITHUB_ENV
-            pytest app/ --cov=app --cov-report=xml
+          echo "PYTHONPATH=$(pwd)" >> $GITHUB_ENV
+          pytest tests/ --cov=app --cov-report=xml
 
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@v2
