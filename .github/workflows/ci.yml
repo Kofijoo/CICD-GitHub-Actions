@@ -39,7 +39,7 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:
           args: >
-            -Dsonar.projectKey=cicd-github-actions
+            -Dsonar.projectKey=kofijoo_cicd-github-actions-calculator
             -Dsonar.organization=kofijoo
             -Dsonar.python.coverage.reportPaths=coverage.xml
 
