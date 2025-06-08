@@ -28,21 +28,20 @@ jobs:
           pip install -r requirements.txt
           pip install pytest pytest-cov
 
-# - name: Run Tests
-#   run: |
-#     echo "PYTHONPATH=$(pwd)" >> $GITHUB_ENV
-#     export PYTHONPATH=$(pwd)
-#     pytest tests/ --cov=app --cov-report=xml
-# - name: SonarCloud Scan
-#   uses: SonarSource/sonarcloud-github-action@v2
-#   env:
-#     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-#   with:
-#     args: >
-#       -Dsonar.projectKey=kofijoo_cicd-github-actions-calculator
-#       -Dsonar.organization=kofijoo
-#       -Dsonar.python.coverage.reportPaths=coverage.xml
-
+      - name: Run Tests
+        run: |
+            echo "PYTHONPATH=$(pwd)" >> $GITHUB_ENV
+            export PYTHONPATH=$(pwd)
+            pytest tests/ --cov=app --cov-report=xml
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@v2
+        env:
+            SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        with:
+          args: >
+            Dsonar.projectKey=kofijoo_cicd-github-actions-calculator
+            Dsonar.organization=kofijoo
+            Dsonar.python.coverage.reportPaths=coverage.xml}
 
       - name: Build Docker Image
         run: docker build -t kofi-calculator-image .
