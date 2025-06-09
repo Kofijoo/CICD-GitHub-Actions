@@ -30,9 +30,10 @@ jobs:
 
       - name: Run Tests
         run: |
-            echo "PYTHONPATH=$(pwd)" >> $GITHUB_ENV
-            export PYTHONPATH=$(pwd)
-            pytest tests/ --cov=app --cov-report=xml
+          echo "PYTHONPATH=$(pwd)" >> $GITHUB_ENV
+          export PYTHONPATH=$(pwd)
+          pytest tests/ --cov=app --cov-report=xml
+
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@v2
         env:
@@ -43,27 +44,26 @@ jobs:
             -Dsonar.organization=kofijoo
             -Dsonar.python.coverage.reportPaths=coverage.xml
 
-
       - name: Build Docker Image
         run: docker build -t kofi-calculator-image .
 
-      - name: Run Snyk to check for Python vulnerabilities
-        uses: snyk/actions/python@master
+      - name: Snyk Python Monitor (UI Sync)
+        run: |
+          pip install snyk
+          snyk auth ${{ secrets.SNYK_TOKEN }}
+          snyk test --file=requirements.txt --package-manager=pip
+          snyk monitor --file=requirements.txt --package-manager=pip
         continue-on-error: true
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        with:
-          args: --file=requirements.txt --package-manager=pip
+      - name: Snyk Docker Monitor
+        run: |
+          snyk container test kofi-calculator-image
+          snyk container monitor kofi-calculator-image
+        continue-on-error: true
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
           
-
-      - name: Run Snyk to check Docker image for vulnerabilities
-        uses: snyk/actions/docker@master
-        continue-on-error: true
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        with:
-          image: kofi-calculator-image
-
       - name: Run Trivy Vulnerability Scanner
         uses: aquasecurity/trivy-action@master
         with:
