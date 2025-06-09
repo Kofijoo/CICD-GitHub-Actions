@@ -47,23 +47,28 @@ jobs:
       - name: Build Docker Image
         run: docker build -t kofi-calculator-image .
 
+      - name: Install Snyk CLI
+        run: npm install -g snyk
+
       - name: Snyk Python Monitor (UI Sync)
         run: |
-          pip install snyk
           snyk auth ${{ secrets.SNYK_TOKEN }}
           snyk test --file=requirements.txt --package-manager=pip
           snyk monitor --file=requirements.txt --package-manager=pip
         continue-on-error: true
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+
       - name: Snyk Docker Monitor
         run: |
+          snyk auth ${{ secrets.SNYK_TOKEN }}
           snyk container test kofi-calculator-image
           snyk container monitor kofi-calculator-image
         continue-on-error: true
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-          
+
+
       - name: Run Trivy Vulnerability Scanner
         uses: aquasecurity/trivy-action@master
         with:
