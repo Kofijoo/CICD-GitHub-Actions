@@ -1,0 +1,31 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+.env
+venv/
+.env.*
+
+# OS and editor junk
+.DS_Store
+*.swp
+*.swo
+*.bak
+*.tmp
+
+# Git
+.git/
+.gitignore
+
+# Tests and tools
+tests/
+requirements-dev.txt
+.pytest_cache/
+coverage/
+htmlcov/
+
+# IDEs
+.vscode/
+.idea/
