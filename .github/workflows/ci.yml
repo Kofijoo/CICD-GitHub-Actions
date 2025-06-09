@@ -62,14 +62,11 @@ jobs:
       - name: Snyk Docker Monitor
         run: |
           snyk auth ${{ secrets.SNYK_TOKEN }}
-          snyk container test kofi-calculator-image
-          snyk container monitor kofi-calculator-image
+          snyk container test kofi-calculator-image --file=Dockerfile
+          snyk container monitor kofi-calculator-image --file=Dockerfile
         continue-on-error: true
         env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-
-
-      - name: Run Trivy Vulnerability Scanner
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}      - name: Run Trivy Vulnerability Scanner
         uses: aquasecurity/trivy-action@master
         with:
           image-ref: kofi-calculator-image
